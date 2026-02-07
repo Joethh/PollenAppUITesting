@@ -149,24 +149,6 @@ fun DayForecastCard(
 
 @Preview(showBackground = true)
 @Composable
-fun DayCardPreview() {
-    val forecast = Forecast(
-        "Fri",
-        "June",
-        18,
-        6.8f,
-        "High",
-        Icons.Outlined.Warning
-    )
-
-    DayForecastCard(
-        item = forecast,
-        modifier = Modifier.padding(16.dp)
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
 fun ForecastPreview() {
 
     val days = listOf(
@@ -220,8 +202,10 @@ fun ForecastPreview() {
         )
     )
 
-    ForecastCard(
-        forecasts = days,
-        modifier = Modifier.padding(16.dp)
-    )
+    AppTheme(dynamicColor = false) {
+        ForecastCard(
+            forecasts = days,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
 }

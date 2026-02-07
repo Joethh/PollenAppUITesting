@@ -159,9 +159,10 @@ fun AllergenPreview() {
         )
     )
 
-
-    AllergenBreakdownCard(
-        allergens = allergens,
-        modifier = Modifier.padding(16.dp)
-    )
+    AppTheme(dynamicColor = false) {
+        AllergenBreakdownCard(
+            allergens = allergens,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
 }
