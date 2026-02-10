@@ -31,6 +31,8 @@ fun MainScreen(
             ) {
                 item { Spacer(Modifier.height(220.dp)) }
 
+                item { DataDisplayCard() }
+
                 item { AllergenBreakdownCard(allergens, modifier) }
 
                 item { ForecastCard(forecasts, modifier) }
