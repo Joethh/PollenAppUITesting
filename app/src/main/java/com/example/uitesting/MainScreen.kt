@@ -32,11 +32,26 @@ fun MainScreen(
             ) {
                 item { Spacer(Modifier.height(220.dp)) }
 
-                item { DataDisplayCard() }
+                item {
+                    SensitivityAlertCard(
+                        rating = "High",
+                        description = "Sensitivity levels are high today. Take precautions if you're spending time outdoors.",
+                        modifier = modifier
+                    )
+                }
 
                 item { AllergenBreakdownCard(allergens, modifier) }
 
+                item { 
+                    UserSensitivityInputCard(
+                        modifier = modifier,
+                        onNavigateToFeedback = { /* Handle navigation */ }
+                    ) 
+                }
+
                 item { ForecastCard(forecasts, modifier) }
+
+                item { DataDisplayCard() }
             }
         }
     }

@@ -59,8 +59,6 @@ fun ForecastCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            //TODO: Place individual day cards here
-
             forecasts.forEach { forecast ->
                 DayForecastCard(item = forecast)
                 Spacer(modifier = Modifier.height(14.dp))
