@@ -77,6 +77,23 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            LaunchedEffect(Unit) {
+                val hasPermission = ContextCompat.checkSelfPermission(
+                    this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+
+                if (hasPermission) {
+                    locationName = "Loading..."
+                } else {
+                    permissionLauncher.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            }
+
             // Fetch location and address when the app starts
             LaunchedEffect(locationName) {
                 if (locationName == "Loading..." || locationName == "Refreshing...") {
