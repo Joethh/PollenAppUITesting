@@ -53,7 +53,7 @@ fun ForecastCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "Allergen Breakdown",
+                text = "Weekly Forecast",
                 style = MaterialTheme.typography.titleMedium
             )
 

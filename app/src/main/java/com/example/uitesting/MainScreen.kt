@@ -19,11 +19,12 @@ import androidx.compose.ui.unit.dp
 fun MainScreen(
     forecasts: List<Forecast>,
     allergens: List<AllergenItem>,
+    location: String,
     modifier: Modifier = Modifier
 ) {
     Scaffold { padding ->
         Box {
-            Header()
+            Header(location)
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -123,6 +124,6 @@ fun MainScreenPreview() {
     )
 
     AppTheme(dynamicColor = false) {
-        MainScreen(forecasts, allergens, Modifier.padding(16.dp))
+        MainScreen(forecasts, allergens, "Swansea, UK", Modifier.padding(16.dp))
     }
 }

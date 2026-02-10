@@ -1,5 +1,7 @@
 package com.example.uitesting
 
+import android.location.Address
+import android.location.Geocoder
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,9 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.io.IOException
+
+
 
 @Composable
-fun Header() {
+fun Header(
+    location: String
+) {
+
+
 
     val gradient = Brush.linearGradient(
         colors = listOf(
@@ -52,7 +61,7 @@ fun Header() {
 
         Column {
             Text(
-                text = "Swansea, UK",
+                text = location,
                 color = MaterialTheme.colorScheme.surfaceVariant,
                 fontSize = 16.sp
             )
@@ -109,6 +118,6 @@ fun HighBadge() {
 @Composable
 fun HeaderPreview() {
     AppTheme(dynamicColor = false) {
-        Header()
+        Header("Swansea, UK")
     }
 }
