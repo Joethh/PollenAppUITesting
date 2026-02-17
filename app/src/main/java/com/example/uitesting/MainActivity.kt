@@ -8,11 +8,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,18 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.example.uitesting.ui.elements.AllergenItem
 import com.example.uitesting.ui.elements.Forecast
 
 class MainActivity : ComponentActivity() {
 
-    // Mock data for allergens and forecasts
-    private val allergens = listOf(
-        AllergenItem("Grass", 8.2f, Color(0xFF4CAF50), Icons.Outlined.Warning),
-        AllergenItem("Tree", 6.5f, Color(0xFF2E7D32), Icons.Outlined.Warning),
-        AllergenItem("Weed", 4.3f, Color(0xFF8BC34A), Icons.Outlined.Warning),
-        AllergenItem("Ragweed", 3.1f, Color(0xFFFBC02D), Icons.Outlined.Warning)
-    )
+    private val viewModel: MainViewModel by viewModels()
 
     private val forecasts = listOf(
         Forecast("Fri", "June", 18, 6.8f, "High", Icons.Outlined.Warning),
@@ -51,6 +46,7 @@ class MainActivity : ComponentActivity() {
         val locationManager = LocationManager(this)
 
         setContent {
+            val allergens by viewModel.allergens.collectAsState()
             var locationName by remember { mutableStateOf("Loading...") }
 
             val permissionLauncher = rememberLauncherForActivityResult(
@@ -62,7 +58,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            //Check for location permission and req if needed
             LaunchedEffect(Unit) {
                 val hasPermission = ContextCompat.checkSelfPermission(
                     this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION
