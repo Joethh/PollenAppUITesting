@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.uitesting.RetroFitInstance
 
 @Composable
 fun DataDisplayCard() {
@@ -18,7 +19,7 @@ fun DataDisplayCard() {
 
     LaunchedEffect(Unit) {
         try {
-            val response = RetroFitInstance().apiInterface.getHourlyData()
+            val response = RetroFitInstance().apiInterface.getHourlyPollen()
             if (response.isSuccessful) {
                 responseText = response.body().toString()
             } else {

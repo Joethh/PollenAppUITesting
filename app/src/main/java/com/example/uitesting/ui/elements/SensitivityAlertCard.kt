@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -71,7 +71,7 @@ fun SensitivityAlertCard(
 @Preview(showBackground = true)
 @Composable
 fun SensitivityAlertCardPreview() {
-    AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
         SensitivityAlertCard(
             rating = "High",
             description = "Sensitivity levels are high today. Take precautions if you're spending time outdoors.",

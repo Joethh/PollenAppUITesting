@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -200,7 +200,7 @@ fun ForecastPreview() {
         )
     )
 
-    AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
         ForecastCard(
             forecasts = days,
             modifier = Modifier.padding(16.dp)

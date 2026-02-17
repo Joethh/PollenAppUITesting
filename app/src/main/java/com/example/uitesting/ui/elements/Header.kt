@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import android.location.Address
 import android.location.Geocoder
@@ -117,7 +117,7 @@ fun HighBadge() {
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
-    AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
         Header("Swansea, UK")
     }
 }

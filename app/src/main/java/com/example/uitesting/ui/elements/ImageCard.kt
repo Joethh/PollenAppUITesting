@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

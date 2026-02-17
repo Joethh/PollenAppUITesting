@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -98,7 +98,7 @@ fun UserSensitivityInputCard(
 @Preview(showBackground = true)
 @Composable
 fun UserSensitivityInputCardPreview() {
-    AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
         UserSensitivityInputCard(
             modifier = Modifier.padding(16.dp)
         )

@@ -1,9 +1,7 @@
 package com.example.uitesting
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -23,30 +21,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
-import com.google.android.gms.tasks.CancellationTokenSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
-import java.io.IOException
-import java.util.Locale
-import kotlin.coroutines.resume
+import com.example.uitesting.ui.elements.AllergenItem
+import com.example.uitesting.ui.elements.Forecast
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var locationClient: FusedLocationProviderClient
-
     // Mock data for allergens and forecasts
-    val allergens = listOf(
+    private val allergens = listOf(
         AllergenItem("Grass", 8.2f, Color(0xFF4CAF50), Icons.Outlined.Warning),
         AllergenItem("Tree", 6.5f, Color(0xFF2E7D32), Icons.Outlined.Warning),
         AllergenItem("Weed", 4.3f, Color(0xFF8BC34A), Icons.Outlined.Warning),
         AllergenItem("Ragweed", 3.1f, Color(0xFFFBC02D), Icons.Outlined.Warning)
     )
 
-    val forecasts = listOf(
+    private val forecasts = listOf(
         Forecast("Fri", "June", 18, 6.8f, "High", Icons.Outlined.Warning),
         Forecast("Sat", "June", 19, 6.6f, "High", Icons.Outlined.Warning),
         Forecast("Sun", "June", 20, 7.8f, "High", Icons.Outlined.Warning),
@@ -60,31 +48,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        locationClient = LocationServices.getFusedLocationProviderClient(this)
+        val locationManager = LocationManager(this)
 
         setContent {
-            // State to hold the location string
             var locationName by remember { mutableStateOf("Loading...") }
-            var latLon by remember { mutableStateOf<List<Double>?>(null) }
 
             val permissionLauncher = rememberLauncherForActivityResult(
                 ActivityResultContracts.RequestMultiplePermissions()
             ) { permissions ->
                 val granted = permissions.values.all { it }
                 if (granted) {
-                    // Trigger a re-fetch if permissions are granted
                     locationName = "Refreshing..."
                 }
             }
 
+            //Check for location permission and req if needed
             LaunchedEffect(Unit) {
                 val hasPermission = ContextCompat.checkSelfPermission(
                     this@MainActivity, Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
 
-                if (hasPermission) {
-                    locationName = "Loading..."
-                } else {
+                if (!hasPermission) {
                     permissionLauncher.launch(
                         arrayOf(
                             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -94,13 +78,11 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            // Fetch location and address when the app starts
             LaunchedEffect(locationName) {
                 if (locationName == "Loading..." || locationName == "Refreshing...") {
-                    val coords = getLatLon()
-                    if (coords != null) {
-                        latLon = coords
-                        locationName = getLocationString(coords)
+                    val latLon = locationManager.getLatLon()
+                    if (latLon != null) {
+                        locationName = locationManager.getLocationString(latLon)
                     } else {
                         locationName = "Permission Denied / Unknown"
                     }
@@ -111,43 +93,5 @@ class MainActivity : ComponentActivity() {
                 MainScreen(forecasts, allergens, locationName, Modifier.padding(16.dp))
             }
         }
-    }
-
-    private suspend fun getLocationString(latLon: List<Double>): String {
-        return withContext(Dispatchers.IO) {
-            try {
-                val geocoder = Geocoder(this@MainActivity, Locale.getDefault())
-                val addresses = geocoder.getFromLocation(latLon[0], latLon[1], 1)
-                if (!addresses.isNullOrEmpty()) {
-                    val address = addresses[0]
-                    "${address.subAdminArea}, ${address.countryCode}"
-                } else "Unknown"
-            } catch (e: IOException) { "Error" }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private suspend fun getLatLon(): List<Double>? = suspendCancellableCoroutine { cont ->
-        val hasPermission = ContextCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-
-        if (!hasPermission) {
-            cont.resume(null)
-            return@suspendCancellableCoroutine
-        }
-
-        val cts = CancellationTokenSource()
-        locationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, cts.token)
-            .addOnSuccessListener { location ->
-                if (location != null) {
-                    cont.resume(listOf(location.latitude, location.longitude))
-                } else {
-                    cont.resume(null)
-                }
-            }
-            .addOnFailureListener { cont.resume(null) }
-
-        cont.invokeOnCancellation { cts.cancel() }
     }
 }

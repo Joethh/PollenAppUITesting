@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.uitesting.ui.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -159,7 +159,7 @@ fun AllergenPreview() {
         )
     )
 
-    AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
         AllergenBreakdownCard(
             allergens = allergens,
             modifier = Modifier.padding(16.dp)

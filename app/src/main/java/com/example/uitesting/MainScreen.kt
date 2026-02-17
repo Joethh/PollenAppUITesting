@@ -14,6 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.uitesting.ui.elements.AllergenBreakdownCard
+import com.example.uitesting.ui.elements.AllergenItem
+import com.example.uitesting.ui.elements.DataDisplayCard
+import com.example.uitesting.ui.elements.Forecast
+import com.example.uitesting.ui.elements.ForecastCard
+import com.example.uitesting.ui.elements.Header
+import com.example.uitesting.ui.elements.SensitivityAlertCard
+import com.example.uitesting.ui.elements.UserSensitivityInputCard
 
 @Composable
 fun MainScreen(
@@ -42,7 +50,7 @@ fun MainScreen(
 
                 item { AllergenBreakdownCard(allergens, modifier) }
 
-                item { 
+                item {
                     UserSensitivityInputCard(
                         modifier = modifier,
                         onNavigateToFeedback = { /* Handle navigation */ }
