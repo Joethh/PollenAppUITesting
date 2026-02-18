@@ -5,6 +5,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 
 interface ApiInterface {
-    @GET("v1/air-quality?latitude=52.52&longitude=13.41&hourly=alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,ragweed_pollen,olive_pollen&timezone=auto")
+    @GET("v1/air-quality?latitude=52.52&longitude=13.41&hourly=alder_pollen,birch_pollen,grass_pollen,mugwort_pollen,ragweed_pollen,olive_pollen&timezone=auto&current")
     suspend fun getHourlyPollen(): Response<OpenMeteoResponse>
 }
