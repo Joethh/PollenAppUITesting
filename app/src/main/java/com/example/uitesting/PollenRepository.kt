@@ -7,13 +7,9 @@ import androidx.compose.material.icons.outlined.SentimentVeryDissatisfied
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.uitesting.ui.elements.AllergenItem
+import com.example.uitesting.ui.elements.Forecast
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-data class DailyForecast(
-    val dayOfWeek: String,
-    val allergens: List<AllergenItem>
-)
 
 class PollenRepository {
 
@@ -24,8 +20,8 @@ class PollenRepository {
         val values: List<Float?>
     )
 
-    //A forecast of the MAX forecasted levels each day.
-    suspend fun getFourDayPollenForecast(): List<DailyForecast> {
+    //A forecast of the MAX forecasted value from each day.
+    suspend fun getFourDayPollenForecast(): List<Forecast> {
         return try {
             val response = api.getHourlyPollen()
             if (response.isSuccessful && response.body() != null) {
@@ -52,22 +48,30 @@ class PollenRepository {
                 }.groupBy({ it.first }) { it.second }
 
                 dailyData.entries.take(4).map { (date, dailyReadings) ->
-                    val dayOfWeek = date.dayOfWeek.toString().lowercase().replaceFirstChar { it.uppercase() }
+                    val dayStr = date.dayOfWeek.toString().lowercase().replaceFirstChar { it.uppercase() }
+                    val month = date.month.toString().lowercase().replaceFirstChar{ it.uppercase() }
+                    val dayInt = date.dayOfMonth
 
                     val maxAllergenValues = allergens.mapIndexed { allergenIndex, _ ->
                         dailyReadings.maxOfOrNull { it[allergenIndex] } ?: 0f
                     }
 
-                    val allergenItems = allergens.mapIndexed { index, allergenConfig ->
-                        val score = maxAllergenValues[index]
-                        AllergenItem(
-                            name = allergenConfig.name,
-                            score = score,
-                            color = pollenColor(score),
-                            icon = pollenIcon(score)
-                        )
+                    val overallScore = maxAllergenValues.maxOrNull() ?: 0f
+
+                    val rating = when {
+                        overallScore < 3f -> "Low"
+                        overallScore < 7f -> "Medium"
+                        else -> "High"
                     }
-                    DailyForecast(dayOfWeek, allergenItems)
+
+                    Forecast(
+                        dayStr = dayStr,
+                        month = month,
+                        dayInt = dayInt,
+                        score = overallScore,
+                        rating = rating,
+                        icon = pollenIcon(overallScore)
+                    )
                 }
             } else {
                 emptyList()

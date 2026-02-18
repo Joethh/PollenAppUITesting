@@ -29,15 +29,6 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    private val forecasts = listOf(
-        Forecast("Fri", "June", 18, 6.8f, "High", Icons.Outlined.Warning),
-        Forecast("Sat", "June", 19, 6.6f, "High", Icons.Outlined.Warning),
-        Forecast("Sun", "June", 20, 7.8f, "High", Icons.Outlined.Warning),
-        Forecast("Mon", "June", 21, 5.6f, "Medium", Icons.Outlined.Warning),
-        Forecast("Tue", "June", 22, 2.0f, "Low", Icons.Outlined.Warning),
-        Forecast("Wed", "June", 23, 3.4f, "Low", Icons.Outlined.Warning)
-    )
-
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val allergens by viewModel.allergens.collectAsState()
+            val forecast by viewModel.forecast.collectAsState()
             var locationName by remember { mutableStateOf("Loading...") }
 
             val permissionLauncher = rememberLauncherForActivityResult(
@@ -85,7 +77,7 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme(dynamicColor = false) {
-                MainScreen(forecasts, allergens, locationName, Modifier.padding(16.dp))
+                MainScreen(forecast, allergens, locationName, Modifier.padding(16.dp))
             }
         }
     }
