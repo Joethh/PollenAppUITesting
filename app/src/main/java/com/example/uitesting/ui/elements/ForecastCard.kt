@@ -59,9 +59,16 @@ fun ForecastCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            forecasts.forEach { forecast ->
-                DayForecastCard(item = forecast)
-                Spacer(modifier = Modifier.height(14.dp))
+            if (forecasts.isNotEmpty()) {
+                forecasts.forEach { forecast ->
+                    DayForecastCard(item = forecast)
+                    Spacer(modifier = Modifier.height(14.dp))
+                }
+            } else {
+                Text(
+                    text = "Error: Unable to fetch forecast.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }

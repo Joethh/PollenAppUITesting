@@ -13,5 +13,6 @@ data class HourlyData(
     @SerializedName("grass_pollen") val grassPollen: List<Float?>,
     @SerializedName("mugwort_pollen") val mugwortPollen: List<Float?>,
     @SerializedName("olive_pollen") val olivePollen: List<Float?>,
-    @SerializedName("ragweed_pollen") val ragweedPollen: List<Float?>
+    @SerializedName("ragweed_pollen") val ragweedPollen: List<Float?>,
+    @SerializedName("pm2_5") val pm2_5: List<Float?>
 )

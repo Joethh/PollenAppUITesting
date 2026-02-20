@@ -20,39 +20,45 @@ class PollenRepository {
         val values: List<Float?>
     )
 
-    //A forecast of the MAX forecasted value from each day.
+    // A forecast of the MAX forecasted value from each day.
     suspend fun getFourDayPollenForecast(): List<Forecast> {
         return try {
             val response = api.getHourlyPollen()
-            if (response.isSuccessful && response.body() != null) {
-                val hourlyData = response.body()!!.hourly
+            if (!response.isSuccessful) return emptyList()
 
-                val allergens = listOf(
-                    AllergenConfig("Alder", hourlyData.alderPollen),
-                    AllergenConfig("Birch", hourlyData.birchPollen),
-                    AllergenConfig("Grass", hourlyData.grassPollen),
-                    AllergenConfig("Mugwort", hourlyData.mugwortPollen),
-                    AllergenConfig("Olive", hourlyData.olivePollen),
-                    AllergenConfig("Ragweed", hourlyData.ragweedPollen)
-                )
+            val hourly = response.body()?.hourly ?: return emptyList()
 
-                val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                val dailyData = hourlyData.time.mapIndexed { index, timeString ->
-                    // Open-Meteo typically uses local date time format in the hourly array
-                    val dateTime = LocalDateTime.parse(timeString, formatter)
-                    val day = dateTime.toLocalDate()
+            val allergens = listOf(
+                AllergenConfig("Alder", hourly.alderPollen),
+                AllergenConfig("Birch", hourly.birchPollen),
+                AllergenConfig("Grass", hourly.grassPollen),
+                AllergenConfig("Mugwort", hourly.mugwortPollen),
+                AllergenConfig("Olive", hourly.olivePollen),
+                AllergenConfig("Ragweed", hourly.ragweedPollen)
+            )
+
+            val dailyGrouped = hourly.time.mapIndexedNotNull { index, timeString ->
+                runCatching {
+                    val localDateTime = LocalDateTime.parse(timeString)
+                    val localDate = localDateTime.toLocalDate()
+
                     val allergenValues = allergens.map { allergen ->
-                        allergen.values.getOrElse(index) { 0f } ?: 0f
+                        allergen.values.getOrNull(index) ?: 0f
                     }
-                    day to allergenValues
-                }.groupBy({ it.first }) { it.second }
 
-                dailyData.entries.take(4).map { (date, dailyReadings) ->
-                    val dayStr = date.dayOfWeek.toString().lowercase().replaceFirstChar { it.uppercase() }
-                    val month = date.month.toString().lowercase().replaceFirstChar{ it.uppercase() }
-                    val dayInt = date.dayOfMonth
+                    localDate to allergenValues
+                }.getOrNull()
+            }.groupBy(
+                keySelector = { it.first },
+                valueTransform = { it.second }
+            )
 
-                    val maxAllergenValues = allergens.mapIndexed { allergenIndex, _ ->
+            dailyGrouped
+                .toSortedMap()
+                .entries
+                .take(4)
+                .map { (date, dailyReadings) ->
+                    val maxAllergenValues = allergens.indices.map { allergenIndex ->
                         dailyReadings.maxOfOrNull { it[allergenIndex] } ?: 0f
                     }
 
@@ -65,75 +71,89 @@ class PollenRepository {
                     }
 
                     Forecast(
-                        dayStr = dayStr,
-                        month = month,
-                        dayInt = dayInt,
+                        dayStr = date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
+                        month = date.month.name.lowercase().replaceFirstChar { it.uppercase() },
+                        dayInt = date.dayOfMonth,
                         score = overallScore,
                         rating = rating,
                         icon = pollenIcon(overallScore)
                     )
                 }
-            } else {
-                emptyList()
+
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    // Get the pollen levels for the current hour.
+    suspend fun getCurrentPollenLevels(): List<AllergenItem> {
+        return try {
+            val response = api.getHourlyPollen()
+            if (!response.isSuccessful) return emptyList()
+
+            val hourly = response.body()?.hourly ?: return emptyList()
+
+            val allergens = listOf(
+                AllergenConfig("Alder", hourly.alderPollen),
+                AllergenConfig("Birch", hourly.birchPollen),
+                AllergenConfig("Grass", hourly.grassPollen),
+                AllergenConfig("Mugwort", hourly.mugwortPollen),
+                AllergenConfig("Olive", hourly.olivePollen),
+                AllergenConfig("Ragweed", hourly.ragweedPollen)
+            )
+
+            val now = LocalDateTime.now()
+            val currentIndex = hourly.time.indexOfLast { timeString ->
+                runCatching {
+                    val time = LocalDateTime.parse(timeString)
+                    !time.isAfter(now)
+                }.getOrDefault(false)
+            }.coerceAtLeast(0)
+
+            allergens.map { allergen ->
+                val score = allergen.values.getOrNull(currentIndex) ?: 0f
+
+                AllergenItem(
+                    name = allergen.name,
+                    score = score,
+                    color = pollenColor(score),
+                    icon = pollenIcon(score)
+                )
             }
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    //Get the pollen levels for the current hour.
-    suspend fun getCurrentPollenLevels(): List<AllergenItem> {
+    // Get the Particulate Matter (PM2.5) for the current hour
+    suspend fun getCurrentParticulateMatter(): Float {
         return try {
             val response = api.getHourlyPollen()
-            if (response.isSuccessful && response.body() != null) {
-                val hourlyData = response.body()!!.hourly
-                
-                // Find the index for the current hour
-                val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                val now = LocalDateTime.now()
-                var currentIndex = 0
-                for (i in hourlyData.time.indices) {
-                    val time = LocalDateTime.parse(hourlyData.time[i], formatter)
-                    if (time.isAfter(now)) break
-                    currentIndex = i
-                }
+            if (!response.isSuccessful) return 0f
 
-                val allergens = listOf(
-                    AllergenConfig("Alder", hourlyData.alderPollen),
-                    AllergenConfig("Birch", hourlyData.birchPollen),
-                    AllergenConfig("Grass", hourlyData.grassPollen),
-                    AllergenConfig("Mugwort", hourlyData.mugwortPollen),
-                    AllergenConfig("Olive", hourlyData.olivePollen),
-                    AllergenConfig("Ragweed", hourlyData.ragweedPollen)
-                )
+            val hourly = response.body()?.hourly ?: return 0f
+            val now = LocalDateTime.now()
 
-                allergens.map { allergen ->
-                    val score = allergen.values
-                        .getOrElse(currentIndex) { 0f } ?: 0f
+            val currentIndex = hourly.time.indexOfLast {
+                val time = LocalDateTime.parse(it)
+                !time.isAfter(now)
+            }
 
-                    AllergenItem(
-                        name = allergen.name,
-                        score = score,
-                        color = pollenColor(score),
-                        icon = pollenIcon(score)
-                    )
-                }
-            } else emptyList()
+            if (currentIndex == -1) return 0f
+            hourly.pm2_5.getOrNull(currentIndex) ?: 0f
+
         } catch (e: Exception) {
-            emptyList()
+            0f
         }
     }
 
     private fun pollenColor(score: Float): Color {
         val clamped = score.coerceIn(0f, 10f)
         val fraction = clamped / 10f
-
         val red = (255 * fraction).toInt()
         val green = (255 * (1f - fraction)).toInt()
-
         return Color(red, green, 0)
     }
-
 
     private fun pollenIcon(score: Float): ImageVector {
         return when {
