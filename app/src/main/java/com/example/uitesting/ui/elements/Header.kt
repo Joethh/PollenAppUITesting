@@ -33,7 +33,8 @@ import java.io.IOException
 
 @Composable
 fun Header(
-    location: String
+    location: String,
+    particulates: Float
 ) {
 
 
@@ -69,13 +70,13 @@ fun Header(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Current Pollen Level",
+                text = "Current Particulate Level",
                 color = MaterialTheme.colorScheme.surfaceVariant
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "7.8",
+                    text = particulates.toString(),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
@@ -118,6 +119,6 @@ fun HighBadge() {
 @Composable
 fun HeaderPreview() {
     _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
-        Header("Swansea, UK")
+        Header("Swansea, UK", 2.7f)
     }
 }
