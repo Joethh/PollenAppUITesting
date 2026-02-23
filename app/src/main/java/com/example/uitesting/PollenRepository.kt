@@ -20,9 +20,9 @@ class PollenRepository {
     )
 
     // A forecast of the MAX forecasted value from each day.
-    suspend fun getFourDayPollenForecast(): List<Forecast> {
+    suspend fun getFourDayPollenForecast(lat: Double, lon: Double): List<Forecast> {
         return try {
-            val response = api.getHourlyPollen()
+            val response = api.getHourlyPollen(lat, lon)
             if (!response.isSuccessful) return emptyList()
 
             val hourly = response.body()?.hourly ?: return emptyList()
@@ -85,9 +85,9 @@ class PollenRepository {
     }
 
     // Get the pollen levels for the current hour.
-    suspend fun getCurrentPollenLevels(): List<AllergenItem> {
+    suspend fun getCurrentPollenLevels(lat: Double, lon: Double): List<AllergenItem> {
         return try {
-            val response = api.getHourlyPollen()
+            val response = api.getHourlyPollen(lat, lon)
             if (!response.isSuccessful) return emptyList()
 
             val hourly = response.body()?.hourly ?: return emptyList()
@@ -125,9 +125,9 @@ class PollenRepository {
     }
 
     // Get the European AQI for the current hour
-    suspend fun getCurrentAqi(): Int {
+    suspend fun getCurrentAqi(lat: Double, lon: Double): Int {
         return try {
-            val response = api.getHourlyPollen()
+            val response = api.getHourlyPollen(lat, lon)
             if (!response.isSuccessful) return 0
 
             val current = response.body()?.current ?: return 0

@@ -10,8 +10,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,10 +18,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.example.uitesting.ui.elements.Forecast
 
 class MainActivity : ComponentActivity() {
 
@@ -71,6 +67,7 @@ class MainActivity : ComponentActivity() {
                     val latLon = locationManager.getLatLon()
                     if (latLon != null) {
                         locationName = locationManager.getLocationString(latLon)
+                        viewModel.fetchDataForLocation(latLon[0], latLon[1])
                     } else {
                         locationName = "Permission Denied / Unknown"
                     }
@@ -78,7 +75,7 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme(dynamicColor = false) {
-                MainScreen(forecast, allergens, locationName,aqi, Modifier.padding(16.dp))
+                MainScreen(forecast, allergens, locationName, aqi, Modifier.padding(16.dp))
             }
         }
     }

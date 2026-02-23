@@ -19,7 +19,7 @@ fun DataDisplayCard() {
 
     LaunchedEffect(Unit) {
         try {
-            val response = RetroFitInstance().apiInterface.getHourlyPollen()
+            val response = RetroFitInstance().apiInterface.getHourlyPollen(51.619450, -3.945775)
             if (response.isSuccessful) {
                 responseText = response.body().toString()
             } else {

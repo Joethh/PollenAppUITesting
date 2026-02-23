@@ -21,29 +21,29 @@ class MainViewModel : ViewModel() {
     private val _aqi = MutableStateFlow<Int>(0)
     val aqi: StateFlow<Int> = _aqi.asStateFlow()
 
-    init {
-        getCurrentPollenLevels()
-        getFourDayPollenForecast()
-        getCurrentAqi()
+    fun fetchDataForLocation(lat: Double, lon: Double) {
+        getCurrentPollenLevels(lat, lon)
+        getFourDayPollenForecast(lat, lon)
+        getCurrentAqi(lat, lon)
     }
 
-    private fun getCurrentPollenLevels() {
+    private fun getCurrentPollenLevels(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val pollenData = pollenRepository.getCurrentPollenLevels()
+            val pollenData = pollenRepository.getCurrentPollenLevels(lat, lon)
             _allergens.value = pollenData
         }
     }
 
-    private fun getFourDayPollenForecast() {
+    private fun getFourDayPollenForecast(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val forecastData = pollenRepository.getFourDayPollenForecast()
+            val forecastData = pollenRepository.getFourDayPollenForecast(lat, lon)
             _forecast.value = forecastData
         }
     }
 
-    private fun getCurrentAqi() {
+    private fun getCurrentAqi(lat: Double, lon: Double) {
         viewModelScope.launch {
-            val aqiData = pollenRepository.getCurrentAqi()
+            val aqiData = pollenRepository.getCurrentAqi(lat, lon)
             _aqi.value = aqiData
         }
     }
