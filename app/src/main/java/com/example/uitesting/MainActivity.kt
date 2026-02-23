@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
             val allergens by viewModel.allergens.collectAsState()
             val forecast by viewModel.forecast.collectAsState()
             var locationName by remember { mutableStateOf("Loading...") }
-            val particulates by viewModel.particulates.collectAsState()
+            val aqi by viewModel.aqi.collectAsState()
 
             val permissionLauncher = rememberLauncherForActivityResult(
                 ActivityResultContracts.RequestMultiplePermissions()
@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
             }
 
             AppTheme(dynamicColor = false) {
-                MainScreen(forecast, allergens, locationName,particulates, Modifier.padding(16.dp))
+                MainScreen(forecast, allergens, locationName,aqi, Modifier.padding(16.dp))
             }
         }
     }

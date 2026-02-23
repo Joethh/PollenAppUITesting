@@ -1,7 +1,5 @@
 package com.example.uitesting.ui.elements
 
-import android.location.Address
-import android.location.Geocoder
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,14 +25,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.io.IOException
 
 
 
 @Composable
 fun Header(
     location: String,
-    particulates: Float
+    aqi: Int
 ) {
 
 
@@ -70,13 +67,13 @@ fun Header(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Current Particulate Level",
+                text = "Air Quality",
                 color = MaterialTheme.colorScheme.surfaceVariant
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = particulates.toString(),
+                    text = aqi.toString(),
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
@@ -91,25 +88,33 @@ fun Header(
                 )
             }
 
-            HighBadge()
+            RatingBadge(aqi)
         }
     }
 }
 
 @Composable
-fun HighBadge() {
+fun RatingBadge(aqi: Int) {
+    val text = when {
+        aqi < 21 -> "Good"
+        aqi < 41 -> "Fair"
+        aqi < 61 -> "Moderate"
+        aqi < 81 -> "Poor"
+        else -> "Very Poor"
+    }
+
     Box(
         modifier = Modifier
             .padding(top = 8.dp)
             .background(
-                color = Color(0xFFFF8A00),
+                color = MaterialTheme.colorScheme.primaryContainer,
                 shape = RoundedCornerShape(50)
             )
             .padding(horizontal = 16.dp, vertical = 6.dp)
     ) {
         Text(
-            text = "High",
-            color = MaterialTheme.colorScheme.surfaceVariant,
+            text = text,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             fontWeight = FontWeight.Medium
         )
     }
@@ -119,6 +124,6 @@ fun HighBadge() {
 @Composable
 fun HeaderPreview() {
     _root_ide_package_.com.example.uitesting.AppTheme(dynamicColor = false) {
-        Header("Swansea, UK", 2.7f)
+        Header("Swansea, UK", 55)
     }
 }

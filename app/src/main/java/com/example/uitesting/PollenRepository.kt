@@ -9,7 +9,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.uitesting.ui.elements.AllergenItem
 import com.example.uitesting.ui.elements.Forecast
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class PollenRepository {
 
@@ -125,25 +124,17 @@ class PollenRepository {
         }
     }
 
-    // Get the Particulate Matter (PM2.5) for the current hour
-    suspend fun getCurrentParticulateMatter(): Float {
+    // Get the European AQI for the current hour
+    suspend fun getCurrentAqi(): Int {
         return try {
             val response = api.getHourlyPollen()
-            if (!response.isSuccessful) return 0f
+            if (!response.isSuccessful) return 0
 
-            val hourly = response.body()?.hourly ?: return 0f
-            val now = LocalDateTime.now()
+            val current = response.body()?.current ?: return 0
 
-            val currentIndex = hourly.time.indexOfLast {
-                val time = LocalDateTime.parse(it)
-                !time.isAfter(now)
-            }
-
-            if (currentIndex == -1) return 0f
-            hourly.pm2_5.getOrNull(currentIndex) ?: 0f
-
+            current.europeanAqi ?: 0
         } catch (e: Exception) {
-            0f
+            0
         }
     }
 

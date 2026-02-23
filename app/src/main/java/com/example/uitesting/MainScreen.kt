@@ -28,12 +28,12 @@ fun MainScreen(
     forecasts: List<Forecast>,
     allergens: List<AllergenItem>,
     location: String,
-    particulates: Float,
+    aqi: Int,
     modifier: Modifier = Modifier
 ) {
     Scaffold { padding ->
         Box {
-            Header(location, particulates)
+            Header(location, aqi)
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -148,6 +148,6 @@ fun MainScreenPreview() {
     )
 
     AppTheme(dynamicColor = false) {
-        MainScreen(forecasts, allergens, "Swansea, UK", 2.7f, Modifier.padding(16.dp))
+        MainScreen(forecasts, allergens, "Swansea, UK", 15, Modifier.padding(16.dp))
     }
 }

@@ -18,13 +18,13 @@ class MainViewModel : ViewModel() {
     private val _forecast = MutableStateFlow<List<Forecast>>(emptyList())
     val forecast: StateFlow<List<Forecast>> = _forecast.asStateFlow()
 
-    private val _particulates = MutableStateFlow<Float>(0f)
-    val particulates: StateFlow<Float> = _particulates.asStateFlow()
+    private val _aqi = MutableStateFlow<Int>(0)
+    val aqi: StateFlow<Int> = _aqi.asStateFlow()
 
     init {
         getCurrentPollenLevels()
         getFourDayPollenForecast()
-        getCurrentParticulateMatter()
+        getCurrentAqi()
     }
 
     private fun getCurrentPollenLevels() {
@@ -41,10 +41,10 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun getCurrentParticulateMatter() {
+    private fun getCurrentAqi() {
         viewModelScope.launch {
-            val particulateData = pollenRepository.getCurrentParticulateMatter()
-            _particulates.value = particulateData
+            val aqiData = pollenRepository.getCurrentAqi()
+            _aqi.value = aqiData
         }
     }
 }

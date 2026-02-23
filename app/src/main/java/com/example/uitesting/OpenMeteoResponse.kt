@@ -3,7 +3,14 @@ package com.example.uitesting
 import com.google.gson.annotations.SerializedName
 
 data class OpenMeteoResponse(
-    val hourly: HourlyData
+    val hourly: HourlyData,
+    val current: CurrentData?
+)
+
+data class CurrentData(
+    val time: String,
+    val interval: Int,
+    @SerializedName("european_aqi") val europeanAqi: Int?
 )
 
 data class HourlyData(
