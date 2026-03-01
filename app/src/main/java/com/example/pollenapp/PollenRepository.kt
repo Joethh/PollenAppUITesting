@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SentimentNeutral
@@ -6,8 +6,8 @@ import androidx.compose.material.icons.outlined.SentimentSatisfiedAlt
 import androidx.compose.material.icons.outlined.SentimentVeryDissatisfied
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.uitesting.ui.elements.AllergenItem
-import com.example.uitesting.ui.elements.Forecast
+import com.example.pollenapp.ui.elements.AllergenItem
+import com.example.pollenapp.ui.elements.Forecast
 import java.time.LocalDateTime
 
 class PollenRepository {

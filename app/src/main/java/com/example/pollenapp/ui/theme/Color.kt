@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF705D0D)

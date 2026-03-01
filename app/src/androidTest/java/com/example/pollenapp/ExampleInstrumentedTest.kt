@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

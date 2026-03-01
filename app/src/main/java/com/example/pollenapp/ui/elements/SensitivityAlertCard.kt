@@ -1,4 +1,4 @@
-package com.example.uitesting.ui.elements
+package com.example.pollenapp.ui.elements
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

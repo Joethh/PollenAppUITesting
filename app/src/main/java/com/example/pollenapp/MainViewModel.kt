@@ -1,9 +1,9 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.uitesting.ui.elements.AllergenItem
-import com.example.uitesting.ui.elements.Forecast
+import com.example.pollenapp.ui.elements.AllergenItem
+import com.example.pollenapp.ui.elements.Forecast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

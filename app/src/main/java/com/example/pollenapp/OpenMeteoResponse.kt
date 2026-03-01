@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import com.google.gson.annotations.SerializedName
 

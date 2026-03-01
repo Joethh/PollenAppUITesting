@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

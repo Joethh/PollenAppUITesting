@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import retrofit2.Response
 import retrofit2.http.GET

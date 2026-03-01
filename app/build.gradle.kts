@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.uitesting"
+    namespace = "com.example.pollenapp"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.uitesting"
+        applicationId = "com.example.pollenapp"
         minSdk = 31
         targetSdk = 36
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.uitesting
+package com.example.pollenapp
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.uitesting.ui.elements.AllergenBreakdownCard
-import com.example.uitesting.ui.elements.AllergenItem
-import com.example.uitesting.ui.elements.DataDisplayCard
-import com.example.uitesting.ui.elements.Forecast
-import com.example.uitesting.ui.elements.ForecastCard
-import com.example.uitesting.ui.elements.Header
-import com.example.uitesting.ui.elements.SensitivityAlertCard
-import com.example.uitesting.ui.elements.UserSensitivityInputCard
+import com.example.pollenapp.ui.elements.AllergenBreakdownCard
+import com.example.pollenapp.ui.elements.AllergenItem
+import com.example.pollenapp.ui.elements.DataDisplayCard
+import com.example.pollenapp.ui.elements.Forecast
+import com.example.pollenapp.ui.elements.ForecastCard
+import com.example.pollenapp.ui.elements.Header
+import com.example.pollenapp.ui.elements.SensitivityAlertCard
+import com.example.pollenapp.ui.elements.UserSensitivityInputCard
 
 @Composable
 fun MainScreen(

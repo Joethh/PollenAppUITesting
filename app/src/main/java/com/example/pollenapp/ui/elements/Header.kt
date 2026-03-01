@@ -1,4 +1,4 @@
-package com.example.uitesting.ui.elements
+package com.example.pollenapp.ui.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

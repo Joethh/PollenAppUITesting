@@ -1,4 +1,4 @@
-package com.example.uitesting.ui.elements
+package com.example.pollenapp.ui.elements
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.uitesting.RetroFitInstance
+import com.example.pollenapp.RetroFitInstance
 
 @Composable
 fun DataDisplayCard() {

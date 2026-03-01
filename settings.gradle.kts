@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "UITesting"
+rootProject.name = "PollenApp"
 include(":app")
  
