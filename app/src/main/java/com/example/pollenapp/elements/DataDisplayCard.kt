@@ -1,4 +1,4 @@
-package com.example.pollenapp.ui.elements
+package com.example.pollenapp.elements
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card

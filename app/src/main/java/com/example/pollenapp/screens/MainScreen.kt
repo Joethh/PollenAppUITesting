@@ -1,4 +1,4 @@
-package com.example.pollenapp
+package com.example.pollenapp.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -14,14 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.pollenapp.ui.elements.AllergenBreakdownCard
-import com.example.pollenapp.ui.elements.AllergenItem
-import com.example.pollenapp.ui.elements.DataDisplayCard
-import com.example.pollenapp.ui.elements.Forecast
-import com.example.pollenapp.ui.elements.ForecastCard
-import com.example.pollenapp.ui.elements.Header
-import com.example.pollenapp.ui.elements.SensitivityAlertCard
-import com.example.pollenapp.ui.elements.UserSensitivityInputCard
+import com.example.pollenapp.elements.AllergenBreakdownCard
+import com.example.pollenapp.elements.AllergenItem
+import com.example.pollenapp.elements.DataDisplayCard
+import com.example.pollenapp.elements.Forecast
+import com.example.pollenapp.elements.ForecastCard
+import com.example.pollenapp.elements.Header
+import com.example.pollenapp.elements.SensitivityAlertCard
+import com.example.pollenapp.elements.UserSensitivityInputCard
 
 @Composable
 fun MainScreen(
@@ -147,7 +147,7 @@ fun MainScreenPreview() {
         )
     )
 
-    AppTheme(dynamicColor = false) {
+    _root_ide_package_.com.example.pollenapp.AppTheme(dynamicColor = false) {
         MainScreen(forecasts, allergens, "Swansea, UK", 15, Modifier.padding(16.dp))
     }
 }

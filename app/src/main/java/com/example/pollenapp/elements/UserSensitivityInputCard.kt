@@ -1,5 +1,6 @@
-package com.example.pollenapp.ui.elements
+package com.example.pollenapp.elements
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -76,7 +77,7 @@ fun UserSensitivityInputCard(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text("Low", style = MaterialTheme.typography.labelSmall)
                 Text("High", style = MaterialTheme.typography.labelSmall)
